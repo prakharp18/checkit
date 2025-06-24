@@ -1,18 +1,31 @@
-<<<<<<< HEAD
+# CheckIt ✅
 
-# React + Vite
+A minimal yet powerful Todo PWA built with **React**, **Redux**, **styled-components**, and **PaperCSS**.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
 
-Currently, two official plugins are available:
+- 📝 Add, delete, and complete todos
+- 🌐 Offline support via `localStorage`
+- 📱 Installable as a Progressive Web App (PWA)
+- 💅 Beautiful but simple UI inspired by PaperCSS
+- 🔐 (Planned) Login support with Firebase Auth
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## Expanding the ESLint configuration
+- Vite + React
+- Redux Toolkit
+- React Router DOM
+- styled-components
+- (Optional) Framer Motion
+- PaperCSS
 
-# If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
 
-# CheckIt
+## 🛠 Local Development
 
-A minimal yet powerful Todo PWA built with React, Redux, and styled-components.
+```bash
+git clone https://github.com/prakharp18/checkit.git
+cd checkit
+npm install
+npm run dev
+```
