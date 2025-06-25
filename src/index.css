@@ -137,3 +137,36 @@ li svg {
   padding: 0.3rem 0.75rem;
   cursor: pointer;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-box {
+  background: var(--container-bg);
+  color: var(--text);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  max-width: 320px;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+li span {
+  transition: all 1.0s ease;
+}
