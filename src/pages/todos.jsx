@@ -5,6 +5,7 @@ import confetti from "canvas-confetti";
 
 function Todos() {
   const [input, setInput] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [todos, setTodos] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("todos")) || [];
@@ -12,8 +13,8 @@ function Todos() {
       return [];
     }
   });
+
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
-  const [dueDate, setDueDate] = useState("");
   const [filter, setFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
@@ -49,7 +50,6 @@ function Todos() {
       dueDate,
       completed: false,
     };
-
     setTodos((prev) => [newTodo, ...prev]);
     setInput("");
     setDueDate("");
@@ -105,16 +105,15 @@ function Todos() {
           Add
         </button>
       </form>
+
       <input
         type="date"
+        min={new Date().toISOString().split("T")[0]}
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
-        style={{
-          padding: "0.5rem",
-          borderRadius: "999px",
-          border: "1px solid #ccc",
-        }}
+        className="date-input"
       />
+
       <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
         <button
           onClick={() => setFilter("all")}
@@ -152,18 +151,33 @@ function Todos() {
                 alignItems: "center",
                 cursor: "pointer",
                 flexGrow: 1,
+                flexDirection: "column",
+                alignItems: "flex-start",
                 textDecoration: todo.completed ? "line-through" : "none",
                 opacity: todo.completed ? 0.6 : 1,
               }}
             >
-              <CheckSquare
-                size={18}
-                style={{
-                  marginRight: "8px",
-                  color: todo.completed ? "var(--accent)" : "#ccc",
-                }}
-              />
-              {todo.text}
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <CheckSquare
+                  size={18}
+                  style={{
+                    marginRight: "8px",
+                    color: todo.completed ? "var(--accent)" : "#ccc",
+                  }}
+                />
+                {todo.text}
+              </span>
+              {todo.dueDate && (
+                <small
+                  style={{
+                    marginLeft: "26px",
+                    fontSize: "0.75rem",
+                    opacity: 0.7,
+                  }}
+                >
+                  Due: {new Date(todo.dueDate).toLocaleDateString()}
+                </small>
+              )}
             </span>
             <button
               className="btn-small btn-danger"

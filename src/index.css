@@ -129,7 +129,7 @@ body.dark li span.completed {
   border-radius: 999px;
 }
 
-/* Default delete button */
+/*delete button*/
 .btn-danger {
   background-color: #f44336;
   color: white;
@@ -148,7 +148,6 @@ body.dark .btn-danger svg {
   color: #f28b82;
 }
 
-/* Theme toggle */
 .theme-toggle-btn {
   float: right;
   margin-bottom: 1rem;
@@ -210,4 +209,16 @@ li input[type="text"] {
   border-radius: 999px;
   font-size: 1rem;
   width: 70%;
+}
+
+.date-input {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--form-bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
 }
