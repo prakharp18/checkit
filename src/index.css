@@ -109,6 +109,18 @@ li svg {
   vertical-align: middle;
   margin-right: 8px;
   color: var(--accent);
+  filter: none;
+  transition: color 0.3s ease, filter 0.3s ease;
+}
+
+
+body.dark li svg {
+  filter: brightness(1) contrast(1);
+}
+
+body.dark li span.completed {
+  color: #bbbbbb;
+  text-decoration: line-through;
 }
 
 .btn-small {
@@ -117,6 +129,7 @@ li svg {
   border-radius: 999px;
 }
 
+/* Default delete button */
 .btn-danger {
   background-color: #f44336;
   color: white;
@@ -127,6 +140,15 @@ li svg {
   background-color: #f44336;
 }
 
+body.dark .btn-danger {
+  background-color: #2e2e2e;
+}
+
+body.dark .btn-danger svg {
+  color: #f28b82;
+}
+
+/* Theme toggle */
 .theme-toggle-btn {
   float: right;
   margin-bottom: 1rem;
@@ -169,4 +191,23 @@ li svg {
 
 li span {
   transition: all 1.0s ease;
+}
+
+.btn-active {
+  background-color: var(--accent);
+  color: white;
+}
+
+body.dark .btn-active,
+body.dark .filter-btn,
+body.dark .confirm-delete {
+  color: #111 !important;
+}
+
+li input[type="text"] {
+  border: 1px solid var(--accent);
+  padding: 0.4rem 0.6rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  width: 70%;
 }

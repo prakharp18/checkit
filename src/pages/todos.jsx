@@ -1,23 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Trash2, CheckSquare } from "lucide-react";
 import ThemeToggle from "../components/Theme";
 import confetti from "canvas-confetti";
-import { useRef } from "react";
 
 function Todos() {
   const [input, setInput] = useState("");
-
   const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem("todos");
     try {
-      return saved ? JSON.parse(saved) : [];
+      return JSON.parse(localStorage.getItem("todos")) || [];
     } catch {
       return [];
     }
   });
-
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [dueDate, setDueDate] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+  const [username, setUsername] = useState(
+    () => localStorage.getItem("checkit-username") || ""
+  );
+  const [tempUsername, setTempUsername] = useState("");
+  const [showUsernameModal, setShowUsernameModal] = useState(!username);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const hasCelebrated = useRef(false);
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
@@ -25,11 +32,7 @@ function Todos() {
   useEffect(() => {
     if (todos.length > 0 && todos.every((todo) => todo.completed)) {
       if (!hasCelebrated.current) {
-        confetti({
-          particleCount: 500,
-          spread: 999,
-          origin: { y: 0.6 },
-        });
+        confetti({ particleCount: 500, spread: 999, origin: { y: 0.6 } });
         hasCelebrated.current = true;
       }
     } else {
@@ -37,33 +40,59 @@ function Todos() {
     }
   }, [todos]);
 
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim() === "") return;
-
     const newTodo = {
       id: Date.now(),
       text: input,
+      dueDate,
       completed: false,
     };
 
-    setTodos((prevTodos) => [newTodo, ...prevTodos]);
+    setTodos((prev) => [newTodo, ...prev]);
     setInput("");
+    setDueDate("");
   };
 
   const handleDelete = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
     setConfirmDeleteId(null);
   };
+
+  const handleUsernameSubmit = () => {
+    const trimmed = tempUsername.trim();
+    if (trimmed) {
+      localStorage.setItem("checkit-username", trimmed);
+      setUsername(trimmed);
+      setShowUsernameModal(false);
+    }
+  };
+
+  const handleLogoutConfirm = () => {
+    localStorage.removeItem("todos");
+    localStorage.removeItem("checkit-username");
+    window.location.reload();
+  };
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+    return true;
+  });
 
   return (
     <div className="container">
       <ThemeToggle />
-      <h1>📝 CheckIt</h1>
+      <button
+        onClick={() => setShowLogoutModal(true)}
+        className="theme-toggle-btn"
+        style={{ float: "right", marginRight: "0.5rem" }}
+      >
+        🔄 Logout
+      </button>
+
+      <h1>{username && `Welcome, ${username}`}</h1>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -76,9 +105,39 @@ function Todos() {
           Add
         </button>
       </form>
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+        style={{
+          padding: "0.5rem",
+          borderRadius: "999px",
+          border: "1px solid #ccc",
+        }}
+      />
+      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+        <button
+          onClick={() => setFilter("all")}
+          className={`btn-small ${filter === "all" ? "btn-active" : ""}`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setFilter("active")}
+          className={`btn-small ${filter === "active" ? "btn-active" : ""}`}
+        >
+          Active
+        </button>
+        <button
+          onClick={() => setFilter("completed")}
+          className={`btn-small ${filter === "completed" ? "btn-active" : ""}`}
+        >
+          Completed
+        </button>
+      </div>
 
       <ul>
-        {todos.map((todo) => (
+        {filteredTodos.map((todo) => (
           <li key={todo.id}>
             <span
               onClick={() =>
@@ -130,6 +189,49 @@ function Todos() {
               <button
                 className="btn-small btn-danger"
                 onClick={() => setConfirmDeleteId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUsernameModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>Welcome to CheckIt 🎯</h3>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={tempUsername}
+              onChange={(e) => setTempUsername(e.target.value)}
+              style={{
+                padding: "0.5rem 1rem",
+                borderRadius: "999px",
+                border: "1px solid #ccc",
+                margin: "1rem 0",
+                width: "100%",
+              }}
+            />
+            <button onClick={handleUsernameSubmit} className="btn-small">
+              Start Using CheckIt
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showLogoutModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <p>Are you sure you want to logout and reset all data?</p>
+            <div className="modal-actions">
+              <button className="btn-small" onClick={handleLogoutConfirm}>
+                Yes, Reset
+              </button>
+              <button
+                className="btn-small btn-danger"
+                onClick={() => setShowLogoutModal(false)}
               >
                 Cancel
               </button>
