@@ -38,7 +38,7 @@ export default function TodoItem({ todo, onToggle, onDelete }) {
         )}
       </span>
       <button className="btn-small btn-danger" onClick={onDelete}>
-        <Trash2 size={16} />
+        <Trash2 size={15} />
       </button>
     </motion.li>
   );
