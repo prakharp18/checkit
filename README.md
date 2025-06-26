@@ -23,7 +23,7 @@ A clean, powerful **Todo PWA** built with **React**. Designed for speed, simplic
 
 ---
 
-## 🛠 Local Development
+## Local Development
 
 ```bash
 git clone https://github.com/prakharp18/checkit.git
